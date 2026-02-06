@@ -10,6 +10,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -20,26 +21,37 @@ public class GetRequestCommand implements Command<String> {
 
     @Override
     public String execute() throws IOException, InterruptedException {
-        log.info("Sending get request to {}", getURL);
+        final String requestId = UUID.randomUUID().toString();
+        log.info("requestId={} Sending get request to {}", requestId, getURL);
+
+        final long startNs = System.nanoTime();
         try {
             HttpRequest getRequest = HttpRequest.newBuilder()
                     .uri(URI.create(getURL))
                     .GET()
                     .build();
             HttpResponse<String> response = client.send(getRequest, HttpResponse.BodyHandlers.ofString());
+            final long durationMs = (System.nanoTime() - startNs) / 1_000_000;
+
             objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
             Object json = objectMapper.readValue(response.body(), Object.class);
             String jsonFormat = objectMapper.writeValueAsString(json);
-            logResponse(response);
+
+            logResponse(requestId, response, durationMs);
             return jsonFormat;
         } catch (IOException | InterruptedException e) {
-            log.error("Error sending get request to {}: {}", getURL, e.getMessage());
+            final long durationMs = (System.nanoTime() - startNs) / 1_000_000;
+            log.error("requestId={} Error sending get request to {} (durationMs={}): {}", requestId, getURL, durationMs, e.getMessage());
             throw e;
         }
     }
 
-    private void logResponse(HttpResponse<String> response) {
-        log.info("Status code: {}", response.statusCode());
-        log.info("Body: \n {}", response.body());
+    private void logResponse(String requestId, HttpResponse<String> response, long durationMs) {
+        String contentType = response.headers().firstValue("Content-Type").orElse("<unknown>");
+        int bodyLength = response.body() == null ? 0 : response.body().length();
+        String bodyPreview = response.body() == null ? "" : response.body();
+        log.info("requestId={} Status code: {} durationMs={} contentType={} bodyLength={}", requestId, response.statusCode(), durationMs, contentType, bodyLength);
+        log.debug("requestId={} ResponseHeaders={}", requestId, response.headers().map());
+        log.debug("requestId={} BodyPreview:\n{}", requestId, bodyPreview);
     }
 }

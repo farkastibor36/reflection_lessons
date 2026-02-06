@@ -10,6 +10,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.UUID;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -21,7 +22,11 @@ public class PostRequestCommand implements Command<String> {
 
     @Override
     public String execute() throws IOException, InterruptedException {
-        log.info("Sending post request to {}", postURL);
+        final String requestId = UUID.randomUUID().toString();
+        int requestBodyLength = formData == null ? 0 : formData.length();
+        log.info("requestId={} Sending post request to {} (requestBodyLength={})", requestId, postURL, requestBodyLength);
+
+        final long startMs = System.nanoTime();
         try {
             HttpRequest postRequest = HttpRequest.newBuilder()
                     .uri(URI.create(postURL))
@@ -29,19 +34,27 @@ public class PostRequestCommand implements Command<String> {
                     .POST(HttpRequest.BodyPublishers.ofString(formData))
                     .build();
             HttpResponse<String> postResponse = client.send(postRequest, HttpResponse.BodyHandlers.ofString());
+            final long durationMs = (System.nanoTime() - startMs) / 1_000_000;
+
             Object jsonFormat2 = objectMapper.readValue(postResponse.body(), Object.class);
             objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
             String jsonPostFormat = objectMapper.writeValueAsString(jsonFormat2);
-            logResponse(postResponse, jsonPostFormat);
+
+            logResponse(requestId, postResponse, jsonPostFormat, durationMs);
             return jsonPostFormat;
         } catch (IOException | InterruptedException e) {
-            log.error("Error sending post request to {}: {}", postURL, e.getMessage());
+            final long durationMs = (System.nanoTime() - startMs) / 1_000_000;
+            log.error("requestId={} Error sending post request to {} (durationMs={}): {}", requestId, postURL, durationMs, e.getMessage());
             throw e;
         }
     }
 
-    private void logResponse(HttpResponse<String> postResponse, String jsonPostFormat) {
-        log.info("Status code: {}", postResponse.statusCode());
-        log.info("Body: \n {}", jsonPostFormat);
+    private void logResponse(String requestId, HttpResponse<String> postResponse, String jsonPostFormat, long durationMs) {
+        String contentType = postResponse.headers().firstValue("Content-Type").orElse("<unknown>");
+        int bodyLength = postResponse.body() == null ? 0 : postResponse.body().length();
+        String bodyPreview = jsonPostFormat == null ? "" : jsonPostFormat;
+        log.info("requestId={} Status code: {} durationMs={} contentType={} bodyLength={}", requestId, postResponse.statusCode(), durationMs, contentType, bodyLength);
+        log.debug("requestId={} ResponseHeaders={}", requestId, postResponse.headers().map());
+        log.debug("requestId={} BodyPreview:\n{}", requestId, bodyPreview);
     }
 }
