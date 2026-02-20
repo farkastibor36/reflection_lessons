@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class ItemCRUDServices {
+public class ItemCRUDService {
     private final ItemRepository itemRepository;
     private final ItemMapper itemMapper;
 
@@ -21,8 +21,8 @@ public class ItemCRUDServices {
         return itemRepository.save(item);
     }
 
-    public List<Item> findAll() {
-        return itemRepository.findAll();
+    public List<ItemDto> findAllDto() {
+        return itemRepository.findAll().stream().map(itemMapper::toDto).toList();
     }
 
     public Optional<Item> findById(Long id) {
