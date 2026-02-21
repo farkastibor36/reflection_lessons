@@ -13,12 +13,18 @@ class PostRequestCommandTest {
 
     @Test
     void execute() throws IOException, InterruptedException {
-        String jsonPost = "{\"title\":\"" + TITLE + "\",\"body\":\"" + BODY + "\",\"userId\":" + USER_ID + "}";
+        String jsonPost = """
+                {
+                "title":"%s",
+                "body":"%s",
+                "userId": "%s"
+                }
+                """.formatted(TITLE, BODY, USER_ID);
         PostRequestCommand postRequestCommand = new PostRequestCommand(URLConstants.POST, jsonPost, BlogPostResponse.class);
         BlogPostResponse blogPostResponse = (BlogPostResponse) postRequestCommand.execute();
         assertNotNull(blogPostResponse);
-        assertEquals("Test Title", blogPostResponse.getTitle());
-        assertEquals("Test Body", blogPostResponse.getBody());
-        assertEquals(102, blogPostResponse.getUserId());
+        assertEquals("Test Title", blogPostResponse.title());
+        assertEquals("Test Body", blogPostResponse.body());
+        assertEquals(102, blogPostResponse.userId());
     }
 }
