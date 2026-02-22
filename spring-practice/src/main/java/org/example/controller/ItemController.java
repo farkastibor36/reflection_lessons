@@ -17,35 +17,35 @@ public class ItemController {
     private final ItemCRUDService itemCRUDService;
     private final ItemMapper itemMapper;
 
-    @GetMapping("/getall")
+    @GetMapping("/all")
     public ResponseEntity<List<ItemDto>> getAllItems() {
         List<ItemDto> items = itemCRUDService.findAllDto();
         return ResponseEntity.ok(items);
     }
 
-    @GetMapping("/find/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ItemDto> getItemById(@PathVariable("id") Long id) {
-        return ResponseEntity.ok(itemMapper.toDto(itemCRUDService.findById(id).orElseThrow()));
+        return ResponseEntity.ok(itemCRUDService.findById(id).orElseThrow());
     }
 
     @PostMapping("/save")
-    public ResponseEntity<Item> createItem(@RequestBody Item item) {
-        return ResponseEntity.ok(itemCRUDService.save(item));
+    public ResponseEntity<ItemDto> createItem(@RequestBody Item item) {
+        return ResponseEntity.ok(itemCRUDService.save(item).orElseThrow(() -> new IllegalStateException("Item doesn't save")));
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ItemDto> updateItem(@PathVariable("id") Long id, @RequestBody ItemDto itemDto) {
         Item updated = itemCRUDService.update(id, itemDto);
         return ResponseEntity.ok(itemMapper.toDto(updated));
     }
 
-    @PatchMapping("/upgrade/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<ItemDto> partialUpdateItem(@PathVariable("id") Long id, @RequestBody ItemDto itemDto) {
         Item updated = itemCRUDService.partialUpdate(id, itemDto);
         return ResponseEntity.ok(itemMapper.toDto(updated));
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteItem(@PathVariable("id") Long id) {
         itemCRUDService.deleteById(id);
         return ResponseEntity.noContent().build();

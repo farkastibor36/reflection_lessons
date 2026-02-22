@@ -17,16 +17,16 @@ public class ItemCRUDService {
     private final ItemRepository itemRepository;
     private final ItemMapper itemMapper;
 
-    public Item save(Item item) {
-        return itemRepository.save(item);
+    public Optional<ItemDto> save(Item item) {
+        return Optional.ofNullable(itemMapper.toDto(itemRepository.save(item)));
     }
 
     public List<ItemDto> findAllDto() {
         return itemRepository.findAll().stream().map(itemMapper::toDto).toList();
     }
 
-    public Optional<Item> findById(Long id) {
-        return itemRepository.findById(id);
+    public Optional<ItemDto> findById(Long id) {
+        return Optional.ofNullable(itemMapper.toDto(itemRepository.findById(id).orElseThrow()));
     }
 
     public void deleteById(Long id) {
