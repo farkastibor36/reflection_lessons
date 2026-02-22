@@ -22,28 +22,28 @@ public class ElementController {
         return ResponseEntity.ok(elementCRUDService.saveElement(element));
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<ElementDto> getElementById(@PathVariable("id") Long id) {
         return ResponseEntity.ok(elementMapper.toDto(elementCRUDService.getElementById(id)));
     }
 
-    @GetMapping("/getall")
+    @GetMapping("/all")
     public ResponseEntity<List<ElementDto>> getAllElements() {
         return ResponseEntity.ok(elementCRUDService.findAllElementDto());
     }
 
-    @PatchMapping("/upgrade/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<Element> upgradeElement(@PathVariable("id") Long id, @RequestBody Element element) {
         return ResponseEntity.ok(elementCRUDService.upgradeElement(id, element));
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ElementDto> updateElement(@PathVariable("id") Long id, @RequestBody ElementDto elementDto) {
         Element updated = elementCRUDService.updateElement(id, elementDto);
         return ResponseEntity.ok(elementMapper.toDto(updated));
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteElement(@PathVariable("id") Long id) {
         elementCRUDService.deleteElement(id);
         return ResponseEntity.noContent().build();
