@@ -70,35 +70,35 @@ public class Main {
 
             System.out.println("Task 8:");
             logger.info("Executing Task 8 - DELETE request");
-            deleteRequest.execute();
-            logger.info("Task 8 completed");
+            Integer statusCode = (Integer) deleteRequest.execute();
+            logger.info("Task 8 (Status code: " + statusCode+")");
         }
     }
 
     private static final HttpClient client = HttpClient.newHttpClient();
     private static Logger logger = LoggerFactory.getLogger(Main.class);
 
-    private static final GetRequestCommand<BlogPostResponse[]> getRequest =
-            RequestCommandFactory.createGet(URLConstants.GET_POSTS, BlogPostResponse[].class);
+    private static final Command<BlogPostResponse[]> getRequest =
+            RequestCommandFactory.create(HttpMethod.GET, URLConstants.GET_POSTS, BlogPostResponse[].class);
 
-    private static final GetRequestCommand<BlogPostResponse> getRequestWithPost =
-            RequestCommandFactory.createGet(URLConstants.GET_POST_1, BlogPostResponse.class);
+    private static final Command<BlogPostResponse> getRequestWithPost =
+            RequestCommandFactory.create(HttpMethod.GET, URLConstants.GET_POST_1, BlogPostResponse.class);
 
-    private static final GetRequestCommand<BlogPostResponse2[]> getRequestGetComments =
-            RequestCommandFactory.createGet(URLConstants.GET_COMMENTS, BlogPostResponse2[].class);
+    private static final Command<BlogPostResponse2[]> getRequestGetComments =
+            RequestCommandFactory.create(HttpMethod.GET, URLConstants.GET_COMMENTS, BlogPostResponse2[].class);
 
-    private static final GetRequestCommand<BlogPostResponse2[]> getRequestGetPostById =
-            RequestCommandFactory.createGet(URLConstants.GET_POST_ID_1, BlogPostResponse2[].class);
+    private static final Command<BlogPostResponse2[]> getRequestGetPostById =
+            RequestCommandFactory.create(HttpMethod.GET, URLConstants.GET_POST_ID_1, BlogPostResponse2[].class);
 
-    private static final PostRequestCommand<BlogPostResponse> postRequest =
-            RequestCommandFactory.createPost(URLConstants.POST, URLConstants.JSONPOST, BlogPostResponse.class);
+    private static final Command<BlogPostResponse> postRequest =
+            RequestCommandFactory.create(HttpMethod.POST, URLConstants.POST, URLConstants.JSONPOST, BlogPostResponse.class);
 
-    private static final PutRequestCommand<BlogPostResponse> putRequest =
-            RequestCommandFactory.createPut(URLConstants.PUT_POST_1, URLConstants.JSON_FOR_PUT, BlogPostResponse.class);
+    private static final Command<BlogPostResponse> putRequest =
+            RequestCommandFactory.create(HttpMethod.PUT, URLConstants.PUT_POST_1, URLConstants.JSON_FOR_PUT, BlogPostResponse.class);
 
-    private static final PatchRequestCommand<BlogPostResponse> patchRequest =
-            RequestCommandFactory.createPatch(URLConstants.PATCH_POST_1, URLConstants.JSON_FOR_PATCH, BlogPostResponse.class);
+    private static final Command<BlogPostResponse> patchRequest =
+            RequestCommandFactory.create(HttpMethod.PATCH, URLConstants.PATCH_POST_1, URLConstants.JSON_FOR_PATCH, BlogPostResponse.class);
 
-    private static final DeleteRequestCommand deleteRequest =
+    private static final Command deleteRequest =
             RequestCommandFactory.createDelete(URLConstants.DELETE_POST_1);
 }

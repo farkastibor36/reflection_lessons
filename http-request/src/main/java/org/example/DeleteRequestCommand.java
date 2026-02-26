@@ -11,13 +11,13 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 @RequiredArgsConstructor
-public class DeleteRequestCommand implements Command<Void> {
+public class DeleteRequestCommand implements Command<Integer> {
     private static final HttpClient client = HttpClient.newHttpClient();
     private static final Logger logger = LoggerFactory.getLogger(DeleteRequestCommand.class);
     private final String url;
 
     @Override
-    public Void execute() throws IOException, InterruptedException {
+    public Integer execute() throws IOException, InterruptedException {
         String jsonBody = "{\"id\":1}";
         HttpRequest deleteRequest = HttpRequest.newBuilder()
                 .uri(URI.create(url))
@@ -28,7 +28,7 @@ public class DeleteRequestCommand implements Command<Void> {
 
         HttpResponse<String> response = client.send(deleteRequest, HttpResponse.BodyHandlers.ofString());
         logResponse(response);
-        return null;
+        return response.statusCode();
     }
 
     private void logResponse(HttpResponse<String> response) {

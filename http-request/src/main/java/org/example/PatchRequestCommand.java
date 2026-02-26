@@ -24,7 +24,7 @@ public class PatchRequestCommand<T> implements Command<T> {
     public T execute() throws IOException, InterruptedException {
         HttpRequest patchRequest = HttpRequest.newBuilder()
                 .uri(URI.create(url))
-                .header("Content-Type", "application/json, charset=UTF-8")
+                .header("Content-Type", "application/json; charset=UTF-8")
                 .header("Accept", "application/json")
                 .method("PATCH", HttpRequest.BodyPublishers.ofString(jsonPatch))
                 .build();
