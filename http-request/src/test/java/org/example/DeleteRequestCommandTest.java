@@ -10,9 +10,9 @@ import static org.junit.jupiter.api.Assertions.*;
 public class DeleteRequestCommandTest {
     @Test
     public void execute() throws IOException, InterruptedException {
-        DeleteRequestCommand deleteRequestCommand = RequestCommandFactory.createDelete(URLConstants.DELETE_POST_1);
-        deleteRequestCommand.execute();
-        assertNotNull(deleteRequestCommand.execute());
-        assertTrue(Set.of(200, 204).contains(deleteRequestCommand.execute()), "Expected status code 200 or 204, but got: " + deleteRequestCommand.execute());
+        Command<Integer> deleteRequestCommand = RequestCommandFactory.create(HttpMethod.DELETE, URLConstants.DELETE_POST_1, Integer.class);
+        Integer status = deleteRequestCommand.execute();
+        assertNotNull(status);
+        assertTrue(Set.of(200, 204).contains(status), "Expected status code 200 or 204, but got: " + status);
     }
 }

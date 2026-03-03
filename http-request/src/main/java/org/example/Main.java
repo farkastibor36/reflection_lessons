@@ -71,7 +71,7 @@ public class Main {
             System.out.println("Task 8:");
             logger.info("Executing Task 8 - DELETE request");
             Integer statusCode = (Integer) deleteRequest.execute();
-            logger.info("Task 8 (Status code: " + statusCode+")");
+            logger.info("Task 8 (Status code: " + statusCode + ")");
         }
     }
 
@@ -99,6 +99,6 @@ public class Main {
     private static final Command<BlogPostResponse> patchRequest =
             RequestCommandFactory.create(HttpMethod.PATCH, URLConstants.PATCH_POST_1, URLConstants.JSON_FOR_PATCH, BlogPostResponse.class);
 
-    private static final Command deleteRequest =
-            RequestCommandFactory.createDelete(URLConstants.DELETE_POST_1);
+    private static final Command<Object> deleteRequest =
+            RequestCommandFactory.create(HttpMethod.DELETE, URLConstants.DELETE_POST_1, Object.class);
 }
