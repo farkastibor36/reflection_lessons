@@ -43,6 +43,18 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+            <version>2.9.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest</artifactId>
+            <version>2.2</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
             <version>7.0.4</version>
@@ -58,12 +70,21 @@
             <version>4.1.0-M1</version>
             <scope>compile</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>7.0.4</version>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.42</version>
             <scope>compile</scope>
         </dependency>
+
         <!-- Spring core + webmvc -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -85,6 +106,7 @@
             <version>6.2.0-M1</version>
             <scope>provided</scope>
         </dependency>
+
         <!-- JSON -->
         <dependency>
             <groupId>tools.jackson.core</groupId>
@@ -137,6 +159,22 @@
             <groupId>jakarta.persistence</groupId>
             <artifactId>jakarta.persistence-api</artifactId>
             <version>3.2.0</version>
+        </dependency>
+
+        <!-- Junit Jupiter -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>6.1.0-M1</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Mockito Junit Jupiter -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>5.22.0</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>
