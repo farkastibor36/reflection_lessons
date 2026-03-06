@@ -29,10 +29,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 public class ItemControllerTest {
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
-    ItemCRUDService itemCRUDService = Mockito.mock(ItemCRUDService.class);
-    ItemMapper itemMapper = Mockito.mock(ItemMapper.class);
+    private final ItemCRUDService itemCRUDService = Mockito.mock(ItemCRUDService.class);
+    private final ItemMapper itemMapper = Mockito.mock(ItemMapper.class);
 
     @BeforeEach
     void setup() {
