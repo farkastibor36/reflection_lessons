@@ -1,5 +1,6 @@
 package org.example.springbootpractice.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.springbootpractice.dto.ElementDto;
 import org.example.springbootpractice.mapper.ElementMapper;
@@ -18,8 +19,8 @@ public class ElementController {
     private final ElementMapper elementMapper;
 
     @PostMapping("/save")
-    public ResponseEntity<Element> saveElement(@RequestBody Element element) {
-        return ResponseEntity.ok(elementCRUDService.saveElement(element));
+    public ResponseEntity<ElementDto> saveElement(@Valid @RequestBody ElementDto elementDto) {
+        return ResponseEntity.ok(elementCRUDService.saveElement(elementDto));
     }
 
     @GetMapping("/{id}")
@@ -33,12 +34,13 @@ public class ElementController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<Element> upgradeElement(@PathVariable("id") Long id, @RequestBody Element element) {
-        return ResponseEntity.ok(elementCRUDService.upgradeElement(id, element));
+    public ResponseEntity<ElementDto> upgradeElement(@PathVariable("id") Long id, @Valid @RequestBody ElementDto elementDto) {
+        Element element = elementCRUDService.upgradeElement(id, elementDto);
+        return ResponseEntity.ok(elementMapper.toDto(element));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ElementDto> updateElement(@PathVariable("id") Long id, @RequestBody ElementDto elementDto) {
+    public ResponseEntity<ElementDto> updateElement(@PathVariable("id") Long id, @Valid @RequestBody ElementDto elementDto) {
         Element updated = elementCRUDService.updateElement(id, elementDto);
         return ResponseEntity.ok(elementMapper.toDto(updated));
     }

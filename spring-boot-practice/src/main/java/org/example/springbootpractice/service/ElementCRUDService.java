@@ -16,8 +16,10 @@ public class ElementCRUDService {
     private final ElementRepository elementRepository;
     private final ElementMapper elementMapper;
 
-    public Element saveElement(Element element) {
-        return elementRepository.save(element);
+    public ElementDto saveElement(ElementDto elementDto) {
+        Element element = elementMapper.toEntity(elementDto);
+        Element savedElement = elementRepository.save(element);
+        return elementMapper.toDto(savedElement);
     }
 
     public List<ElementDto> findAllElementDto() {
@@ -33,8 +35,9 @@ public class ElementCRUDService {
     }
 
     @Transactional
-    public Element upgradeElement(Long id, Element element) {
+    public Element upgradeElement(Long id, ElementDto elementDto) {
         Element elementToUpdate = getElementById(id);
+        elementMapper.patchElement(elementDto, elementToUpdate);
         return elementRepository.save(elementToUpdate);
     }
 

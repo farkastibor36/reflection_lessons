@@ -11,7 +11,7 @@ import lombok.Setter;
 @Setter
 public class Element {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "name")
     @Pattern(regexp = "^[a-zA-Z0-9 ]*$")
