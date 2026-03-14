@@ -15,28 +15,28 @@ import java.util.List;
 public class PlaneController {
     private final PlaneService planeCRUDService;
 
-    @PostMapping("/create")
+    @PostMapping("/plane")
     public ResponseEntity<Plane> createPlane(@RequestBody PlaneDto planeDto) {
         return ResponseEntity.ok(planeCRUDService.savePlane(planeDto));
     }
 
-    @GetMapping("/all")
+    @GetMapping("/planes")
     public ResponseEntity<List<PlaneDto>> getPlanes() {
         return ResponseEntity.ok(planeCRUDService.getAllPlanes());
     }
 
-    @GetMapping("/findbyid/{id}")
+    @GetMapping("/plane/{id}")
     public ResponseEntity<PlaneDto> getPlaneById(@PathVariable Long id) {
         return ResponseEntity.ok(planeCRUDService.getPlaneById(id));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/plane/{id}")
     public ResponseEntity<Void> deletePlane(@PathVariable Long id) {
         planeCRUDService.deletePlane(id);
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/plane/{id}")
     public ResponseEntity<PlaneDto> updatePlane(@PathVariable Long id, @RequestBody PlaneDto planeDto) {
         return ResponseEntity.ok(planeCRUDService.updatePlane(id, planeDto));
     }
