@@ -15,8 +15,8 @@ import java.util.List;
 public class PlaneController {
     private final PlaneService planeCRUDService;
 
-    @PostMapping("/save")
-    public ResponseEntity<Plane> savePlane(@RequestBody PlaneDto planeDto) {
+    @PostMapping("/create")
+    public ResponseEntity<Plane> createPlane(@RequestBody PlaneDto planeDto) {
         return ResponseEntity.ok(planeCRUDService.savePlane(planeDto));
     }
 
@@ -25,18 +25,18 @@ public class PlaneController {
         return ResponseEntity.ok(planeCRUDService.getAllPlanes());
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/findbyid/{id}")
     public ResponseEntity<PlaneDto> getPlaneById(@PathVariable Long id) {
         return ResponseEntity.ok(planeCRUDService.getPlaneById(id));
     }
 
-    @GetMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePlane(@PathVariable Long id) {
         planeCRUDService.deletePlane(id);
         return ResponseEntity.ok().build();
     }
 
-    @PatchMapping("/update/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<PlaneDto> updatePlane(@PathVariable Long id, @RequestBody PlaneDto planeDto) {
         return ResponseEntity.ok(planeCRUDService.updatePlane(id, planeDto));
     }
